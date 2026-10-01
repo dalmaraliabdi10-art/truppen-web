@@ -1,9 +1,10 @@
+import PlayerForm from './components/PlayerForm';
 import PlayerList from './components/PlayerList';
 import { usePlayers } from './hooks/usePlayers';
 
 function App() {
   // All datahämtning ligger i hooken. App bestämmer bara vad som ska visas och skickar vidare tillstånden till listan som props.
-  const { players, loading, error, reload } = usePlayers();
+  const { players, loading, error, reload, addPlayer } = usePlayers();
 
   const skadade = players.filter((p) => p.status === 'Skadad').length;
 
@@ -24,6 +25,10 @@ function App() {
       </header>
 
       <main className="app-main">
+        {/* addPlayer skickas ner som prop. Formuläret vet inte att det finns ett API,
+          det anropar bara funktionen det fått och visar felet om den kastar. Det gör formuläret testbart och återanvändbart. */}
+        <PlayerForm onAdd={addPlayer} />
+
         <PlayerList
           players={players}
           loading={loading}
