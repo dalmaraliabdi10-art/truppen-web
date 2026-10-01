@@ -1,22 +1,5 @@
 import { useState } from 'react';
-
-// Listan speglar enum Position i API:et. Skickas ett värde som inte finns där svarar servern 400,
-// så den här listan och enumen måste hållas i takt. Alternativet vore en endpoint som returnerar positionerna mer korrekt,
-// men ett extra anrop för data som aldrig ändras under projektets gång.
-const POSITIONER = [
-  'Målvakt',
-  'Högerback',
-  'Vänsterback',
-  'Mittback',
-  'Wingback',
-  'Defensivmittfältare',
-  'Centralmittfältare',
-  'Offensivmittfältare',
-  'Yttermittfältare',
-  'Högerytter',
-  'Vänsterytter',
-  'Anfallare',
-];
+import { POSITIONER } from '../constants';
 
 const TOMT_FORMULAR = { namn: '', nummer: '', position: 'Målvakt', anteckning: '' };
 
@@ -29,8 +12,7 @@ function PlayerForm({ onAdd }) {
 
   function handleChange(event) {
     const { name, value } = event.target;
-    // [name] är en beräknad nyckel, fältets name attribut avgör vilken egenskap som uppdateras.
-    // Spread först så att övriga fält behålls.
+    // [name] är en beräknad nyckel fältets name attribut avgör vilken egenskap som uppdateras. Spread först så att övriga fält behålls.
     setForm((prev) => ({ ...prev, [name]: value }));
   }
 
@@ -66,8 +48,8 @@ function PlayerForm({ onAdd }) {
       <h2>Lägg till spelare</h2>
 
       <div className="player-form__grid">
-        {/* Fälten är kontrollerade, värdet kommer från state och varje tangenttryck går via handleChange. React äger innehållet,
-        inte DOM-elementet. */}
+        {/* Fälten är kontrollerade värdet kommer från state och varje tangenttryck går via handleChange. React äger innehållet,
+            inte DOM-elementet. */}
         <label className="field">
           <span>Namn</span>
           <input
