@@ -90,6 +90,9 @@ p {
   display: grid;
   gap: var(--gap);
   grid-template-columns: 1fr;
+  /* Grid sträcker som standard alla celler i en rad till samma höjd. När ett kort öppnar redigeringsformuläret växte då hela raden med.
+     align-items: start låter varje kort ta sin egen höjd. */
+  align-items: start;
 }
 
 @media (min-width: 40rem) {

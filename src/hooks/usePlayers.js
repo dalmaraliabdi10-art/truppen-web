@@ -1,10 +1,17 @@
 import { useCallback, useEffect, useState } from 'react';
 import * as api from '../services/api';
 
+// Samma sortering som servern gör (OrderBy på Nummer). Används både när en spelare läggs till och när en uppdateras,
+// så att ett ändrat tröjnummer flyttar kortet direkt i stället för vid nästa omladdning. Jämförelsen på id är ett andrahandsval och 
+// ger samma ordning som servern när två spelare har samma tröjnummer.
+function sorteraPaNummer(lista) {
+  return [...lista].sort((a, b) => a.nummer - b.nummer || a.id - b.id);
+}
+
 // Hook som hämtar alla spelare från API:et och håller reda på laddning och fel.
 // Den då slipper då både effekt och felhantering i komponentena. Samma logik kan återanvändas om vyerna behlöver samma data.
 export function usePlayers() {
-  // Tre separata tillstånd, inte ett. En lista som är tom kan betyda "laddar fortfarande", "inga spelare finns" eller 
+  // Tre separata tillstånd, inte ett. En lista som är tom kan betyda "laddar fortfarande", "inga spelare finns" eller
   // "anropet misslyckades" och de ska visas på tre olika sätt i gränssnittet.
   const [players, setPlayers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -33,23 +40,24 @@ export function usePlayers() {
     load();
   }, [load]);
 
-  // De tre funktionerna fångar inte fel med flit. 
+  // De tre funktionerna fångar inte fel med flit.
   // Ett misslyckat sparande ska visas vid formuläret inte som ett fel över hela listan,
   // så den som anropar får ta hand om felet.
   async function addPlayer(dto) {
     const created = await api.createPlayer(dto);
     // Servern sorterar på tröjnummer, så listan sorteras om lokalt för att inte hamna i otakt med nästa hämtning.
-    setPlayers((prev) => [...prev, created].sort((a, b) => a.nummer - b.nummer));
+    setPlayers((prev) => sorteraPaNummer([...prev, created]));
     return created;
   }
 
   async function savePlayer(id, dto) {
     const updated = await api.updatePlayer(id, dto);
-    setPlayers((prev) => prev.map((p) => (p.id === id ? updated : p)));
+    // Sorteras om av samma skäl som i addPlayer: ändras tröjnumret ska kortet byta plats direkt, inte först när sidan laddas om.
+    setPlayers((prev) => sorteraPaNummer(prev.map((p) => (p.id === id ? updated : p))));
     return updated;
   }
 
-  async function setPlayerImage(id, file) { // 
+  async function setPlayerImage(id, file) { //
     const updated = await api.uploadImage(id, file);
     setPlayers((prev) => prev.map((p) => (p.id === id ? updated : p)));
     return updated;
