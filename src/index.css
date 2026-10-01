@@ -366,6 +366,37 @@ p {
   font-size: 0.85rem;
 }
 
+/* ---------- Filuppladdning ---------- */
+
+.file-label {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+/* Fältet göms visuellt men finns kvar i tabbordningen. Hade det haft display: none eller attributet hidden gick det inte att nå med
+   tangentbord alls. */
+.file-label input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+/* Labeln kan inte få fokus själv, det är det gömda fältet som får det. focus-within sätter ringen på labeln 
+   när något inuti den har fokus. */
+.file-label:focus-within {
+  outline: 2px solid var(--accent-dark);
+  outline-offset: 2px;
+}
+
+/* flex-basis 100% tvingar felet till en egen rad i knappraden i stället för att tryckas ihop bredvid knapparna. */
+.upload-error {
+  flex: 1 0 100%;
+  font-size: 0.8rem;
+  color: var(--danger);
+}
+
 /* focus-visible i stället för focus ringen visas vid tangentbordsnavigering men inte vid musklick. 
    Tar man bort den helt blir sidan obrukbar utan mus. */
 .btn:focus-visible {
