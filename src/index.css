@@ -81,7 +81,7 @@ p {
 
 /* ---------- Lista ---------- */
 
-/* En kolumn på mobil. auto-fill delar själv upp ytan i så många spalter som får plats med minst 20rem bredd,
+/* En kolumn på mobil. auto-fill delar själv upp ytan i så många spalter som får plats med minst 20rem bredd, 
   utan egna media queries för varje brytpunkt. Korten blir aldrig smalare än 20rem och aldrig olika breda. */
 .player-list {
   list-style: none;
@@ -226,8 +226,8 @@ p {
   font-size: 1.1rem;
 }
 
-/* En kolumn på mobil. Vid 40rem blir det två, och fälten som är markerade som wide spänner över båda.
-  Samma brytpunkt som listan använder. */
+/* En kolumn på mobil. Vid 40rem blir det två, och fälten som är markerade som wide spänner över båda. 
+   Samma brytpunkt som listan använder. */
 .player-form__grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -288,6 +288,39 @@ p {
   border-radius: var(--radius);
 }
 
+/* ---------- Redigering i kortet ---------- */
+
+/* Kortet byter från rad till kolumn när formuläret är öppet, så att fälten får hela bredden i stället för att trängas bredvid bilden. */
+.player-card--editing {
+  flex-direction: column;
+}
+
+.player-edit {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  width: 100%;
+}
+
+.player-edit__grid {
+  display: grid;
+  grid-template-columns: 1fr 6rem;
+  gap: 0.75rem;
+}
+
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.player-card__actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: auto;
+  padding-top: 0.25rem;
+}
+
 /* ---------- Knapp ---------- */
 
 .btn {
@@ -310,8 +343,24 @@ p {
   opacity: 0.6;
 }
 
-/* focus-visible i stället för focus: ringen visas vid tangentbordsnavigering men inte vid musklick. 
-  Tar man bort den helt blir sidan obrukbar utan mus. */
+/* Sekundär knapp. Avbryt och Redigera ska inte konkurrera visuellt med den handling som är formulärets huvudsyfte. */
+.btn--ghost {
+  color: var(--text);
+  background: transparent;
+  border: 1px solid var(--border);
+}
+
+.btn--ghost:hover {
+  background: var(--bg);
+}
+
+.btn--small {
+  padding: 0.3rem 0.7rem;
+  font-size: 0.85rem;
+}
+
+/* focus-visible i stället för focus ringen visas vid tangentbordsnavigering men inte vid musklick. 
+   Tar man bort den helt blir sidan obrukbar utan mus. */
 .btn:focus-visible {
   outline: 2px solid var(--accent-dark);
   outline-offset: 2px;
