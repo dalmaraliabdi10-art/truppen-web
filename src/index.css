@@ -138,6 +138,7 @@ p {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  flex: 1; /* Fyller kortets höjd så att margin-top:auto på actions fungerar. */
   gap: 0.25rem;
   min-width: 0; /* Utan denna vägrar flex krympa texten och långa namn spräcker kortet. */
 }
@@ -170,7 +171,6 @@ p {
 /* ---------- Badge ---------- */
 
 .badge {
-  margin-top: auto; /* Trycker ned badgen så att alla kort får den i linje. */
   padding: 0.15rem 0.55rem;
   border-radius: 999px;
   font-size: 0.78rem;
@@ -314,11 +314,15 @@ p {
   gap: 0.5rem;
 }
 
+/* margin-top: auto flyttades hit från .badge . Nu trycks hela raden med status och Redigera ned till kortets botten,
+   så att alla kort får sina knappar i linje även när anteckningarna är olika långa. */
 .player-card__actions {
   display: flex;
+  align-items: center;
+  flex-wrap: wrap;
   gap: 0.5rem;
   margin-top: auto;
-  padding-top: 0.25rem;
+  padding-top: 0.5rem;
 }
 
 /* ---------- Knapp ---------- */

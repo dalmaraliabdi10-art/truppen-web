@@ -1,9 +1,34 @@
+import { useState } from 'react';
 import { imageUrl } from '../services/api';
+import PlayerEditForm from './PlayerEditForm';
 
-// Kortet tar emot en spelare via props och visar den. Det hämtar ingenting själv och äger inget state — allt det behöver kommer utifrån.
-// En sådan komponent är lätt att återanvända och lätt att resonera om, eftersom samma props alltid ger samma utseende.
-function PlayerCard({ player }) {
+// Kortet äger ett enda state: om formuläret är öppet eller inte. Det är ren UI-state och hör hemma här, 
+// spelardatan ägs fortfarande av App via usePlayers, och kortet sparar inget själv utan anropar onSave.
+function PlayerCard({ player, onSave }) {
+  const [editing, setEditing] = useState(false);
   const bild = imageUrl(player.bildPath);
+
+  async function handleSave(dto) {
+    // onSave kastar vidare om API svarar med fel. Då hoppas raden under över, formuläret står kvar och visar felmeddelandet.
+    await onSave(player.id, dto);
+    setEditing(false);
+  }
+
+  if (editing) {
+    return (
+      <article className="player-card player-card--editing">
+        <div className="player-card__heading">
+          <h2>Redigerar {player.namn}</h2>
+        </div>
+
+        <PlayerEditForm
+          player={player}
+          onSave={handleSave}
+          onCancel={() => setEditing(false)}
+        />
+      </article>
+    );
+  }
 
   return (
     <article className="player-card">
@@ -40,15 +65,25 @@ function PlayerCard({ player }) {
           <p className="player-card__note">{player.anteckning}</p>
         )}
 
-        <span
-          className={
-            player.status === 'Skadad'
-              ? 'badge badge--injured'
-              : 'badge badge--available'
-          }
-        >
-          {player.status}
-        </span>
+        <div className="player-card__actions">
+          <span
+            className={
+              player.status === 'Skadad'
+                ? 'badge badge--injured'
+                : 'badge badge--available'
+            }
+          >
+            {player.status}
+          </span>
+
+          <button
+            type="button"
+            className="btn btn--ghost btn--small"
+            onClick={() => setEditing(true)}
+          >
+            Redigera
+          </button>
+        </div>
       </div>
     </article>
   );

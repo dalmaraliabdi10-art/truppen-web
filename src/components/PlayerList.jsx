@@ -1,7 +1,7 @@
 import PlayerCard from './PlayerCard';
 
 // Listan avgör vilket av fyra lägen som ska visas. Den hämtar inget själv utan får tillstånden från usePlayers via App.
-function PlayerList({ players, loading, error, onRetry }) {
+function PlayerList({ players, loading, error, onRetry, onSave }) {
   if (loading) {
     return <p className="state">Laddar truppen…</p>;
   }
@@ -29,7 +29,9 @@ function PlayerList({ players, loading, error, onRetry }) {
         // key måste vara stabil och unik. Spelarens id kommer från databasen och ändras aldrig.
         // Använder man listans index i stället återanvänder React fel element när listan sorteras om eller något tas bort.
         <li key={player.id}>
-          <PlayerCard player={player} />
+          {/* Listan använder inte onSave själv utan skickar den vidare till kortet. 
+             Det kallas prop drilling och är acceptabelt på ett steg — blir det fler lager är Context ett bättre val. */}
+          <PlayerCard player={player} onSave={onSave} />
         </li>
       ))}
     </ul>
