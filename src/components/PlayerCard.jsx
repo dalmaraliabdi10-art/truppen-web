@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { imageUrl } from '../services/api';
+import ImageUpload from './ImageUpload';
 import PlayerEditForm from './PlayerEditForm';
 
 // Kortet äger ett enda state: om formuläret är öppet eller inte. Det är ren UI-state och hör hemma här, 
 // spelardatan ägs fortfarande av App via usePlayers, och kortet sparar inget själv utan anropar onSave.
-function PlayerCard({ player, onSave }) {
+function PlayerCard({ player, onSave, onUpload }) {
   const [editing, setEditing] = useState(false);
   const bild = imageUrl(player.bildPath);
 
@@ -83,6 +84,10 @@ function PlayerCard({ player, onSave }) {
           >
             Redigera
           </button>
+
+          {/* ImageUpload returnerar ett fragment med knappen och ett eventuellt felmeddelande, så båda blir barn till den här
+              flexraden och felet kan brytas ner på egen rad. */}
+          <ImageUpload player={player} onUpload={onUpload} />
         </div>
       </div>
     </article>

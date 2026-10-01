@@ -1,7 +1,7 @@
 import PlayerCard from './PlayerCard';
 
 // Listan avgör vilket av fyra lägen som ska visas. Den hämtar inget själv utan får tillstånden från usePlayers via App.
-function PlayerList({ players, loading, error, onRetry, onSave }) {
+function PlayerList({ players, loading, error, onRetry, onSave, onUpload }) {
   if (loading) {
     return <p className="state">Laddar truppen…</p>;
   }
@@ -31,7 +31,7 @@ function PlayerList({ players, loading, error, onRetry, onSave }) {
         <li key={player.id}>
           {/* Listan använder inte onSave själv utan skickar den vidare till kortet. 
              Det kallas prop drilling och är acceptabelt på ett steg — blir det fler lager är Context ett bättre val. */}
-          <PlayerCard player={player} onSave={onSave} />
+          <PlayerCard player={player} onSave={onSave} onUpload={onUpload} />
         </li>
       ))}
     </ul>

@@ -4,7 +4,8 @@ import { usePlayers } from './hooks/usePlayers';
 
 function App() {
   // All datahämtning ligger i hooken. App bestämmer bara vad som ska visas och skickar vidare tillstånden till listan som props.
-  const { players, loading, error, reload, addPlayer, savePlayer } = usePlayers();
+  const { players, loading, error, reload, addPlayer, savePlayer, setPlayerImage } =
+    usePlayers();
 
   const skadade = players.filter((p) => p.status === 'Skadad').length;
 
@@ -35,6 +36,7 @@ function App() {
           error={error}
           onRetry={reload}
           onSave={savePlayer}
+          onUpload={setPlayerImage}
         />
       </main>
     </div>
