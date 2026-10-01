@@ -10,8 +10,10 @@
 
   --accent: #1b7a3e;
   --accent-dark: #145c2f;
+  --accent-tint: #e6f4ea;
 
   --danger: #b42318;
+  --danger-dark: #912018;
   --danger-bg: #fdecea;
 
   --radius: 10px;
@@ -48,7 +50,15 @@ p {
   padding: var(--gap);
 }
 
+/* ---------- Header ---------- */
+
+/* Mobilen först: rubrik och sammanfattning under varandra. Flex-row med wrap tar över av sig själv när det får plats. */
 .app-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
   padding: 1.5rem 0;
   border-bottom: 1px solid var(--border);
   margin-bottom: 1.5rem;
@@ -62,4 +72,161 @@ p {
 .app-header p {
   color: var(--text-muted);
   font-size: 0.95rem;
+}
+
+.app-header__summary {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Lista ---------- */
+
+/* En kolumn på mobil. auto-fill delar själv upp ytan i så många spalter som får plats med minst 20rem bredd, 
+  utan egna media queries för varje brytpunkt. Korten blir aldrig smalare än 20rem och aldrig olika breda. */
+.player-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--gap);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 40rem) {
+  .player-list {
+    grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+  }
+}
+
+/* ---------- Kort ---------- */
+
+.player-card {
+  display: flex;
+  gap: 0.875rem;
+  height: 100%;
+  padding: 0.875rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.player-card__media {
+  flex: 0 0 4.5rem;
+  height: 4.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: var(--bg);
+  border-radius: var(--radius);
+}
+
+/* object-fit: cover fyller rutan utan att bilden blir ihoptryckt. Utan den sträcks porträtt och landskap olika mycket. */
+.player-card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.player-card__placeholder {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.player-card__body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.25rem;
+  min-width: 0; /* Utan denna vägrar flex krympa texten och långa namn spräcker kortet. */
+}
+
+.player-card__heading {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.player-card__heading h2 {
+  font-size: 1.05rem;
+}
+
+.player-card__number {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.player-card__position {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+.player-card__note {
+  font-size: 0.875rem;
+}
+
+/* ---------- Badge ---------- */
+
+.badge {
+  margin-top: auto; /* Trycker ned badgen så att alla kort får den i linje. */
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.badge--available {
+  background: var(--accent-tint);
+  color: var(--accent-dark);
+}
+
+.badge--injured {
+  background: var(--danger-bg);
+  color: var(--danger-dark);
+}
+
+/* ---------- Tillstånd ---------- */
+
+.state {
+  padding: 2rem 1rem;
+  text-align: center;
+  color: var(--text-muted);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.state--error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.875rem;
+  color: var(--danger);
+  background: var(--danger-bg);
+  border-color: var(--danger);
+}
+
+/* ---------- Knapp ---------- */
+
+.btn {
+  padding: 0.5rem 1rem;
+  font: inherit;
+  font-weight: 600;
+  color: #ffffff;
+  background: var(--accent);
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: var(--accent-dark);
+}
+
+/* focus-visible i stället för focus: ringen visas vid tangentbordsnavigering
+  men inte vid musklick. Tar man bort den helt blir sidan obrukbar utan mus. */
+.btn:focus-visible {
+  outline: 2px solid var(--accent-dark);
+  outline-offset: 2px;
 }
