@@ -99,7 +99,7 @@ Val jag gjort
 
   --
 
-Förbättringar för framtiden
+Förbättringar för framtiden, nuläget:
 
   Ingen möjlighet att ta bort en spelare, API har ingen DELETE
   Ingen inloggning
